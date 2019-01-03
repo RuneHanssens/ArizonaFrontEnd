@@ -1,6 +1,7 @@
 import MyCustomElement from './MyCustomElement.js';
 import './sandwichesList.js';
 import './SandwichOrder.js';
+import './SandwichOrderConfirm.js';
 
 class SandwichApp extends MyCustomElement{
   connectedCallback(){
@@ -10,7 +11,7 @@ class SandwichApp extends MyCustomElement{
 
   setupEventListeners(){
     this.addEventListener('order', (e) => this.orderSandwich(e.detail))
-    this.addEventListener('confirm', (e) => this.confirmOrder(e.detail))
+    this.addEventListener('confirmation', (e) => this.confirmationOrder(e.detail))
   }
 
   get template(){
@@ -20,6 +21,7 @@ class SandwichApp extends MyCustomElement{
       </style>
       <sandwich-list></sandwich-list>
       <sandwich-order class="hidden"></sandwich-order>
+      <sandwich-order-confirmation class="hidden"></sandwich-order-confirm>
     `
   }
 
@@ -29,8 +31,10 @@ class SandwichApp extends MyCustomElement{
     this.shadowRoot.querySelector('sandwich-order').setSandwich(sandwich)
   }
 
-  confirmOrder(order){
-    //post to backend
+  confirmationOrder(order){
+    this.shadowRoot.querySelector('sandwich-order').classList.add('hidden')
+    this.shadowRoot.querySelector('sandwich-order-confirmation').classList.remove('hidden')
+    this.shadowRoot.querySelector('sandwich-order-confirmation').setOrder(order)
   }
 }
 

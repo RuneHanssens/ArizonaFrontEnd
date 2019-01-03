@@ -13,8 +13,6 @@ class SandwichesList extends MyCustomElement{
     json.forEach(sandwich =>{
       let sandwichElement = document.createElement('div')
       sandwichElement.innerHTML = this.sandwichTemplate(sandwich)
-
-      //sandwichElement.addEventListener('click', () => document.querySelector('sandwich-app').dispatchEvent(new CustomEvent('order', {data:sandwich})))
       sandwichesList.appendChild(sandwichElement)
       let id = `${sandwich.id}-order`;
       this.shadowRoot.getElementById(id).addEventListener('click', () => document.querySelector('sandwich-app').dispatchEvent(new CustomEvent('order', {detail:sandwich})))
@@ -41,12 +39,4 @@ class SandwichesList extends MyCustomElement{
             </div>`
   }
 }
-
-const htmlToElement = (html) => {
-    var template = document.createElement('template');
-    html = html.trim(); // Never return a text node of whitespace as the result
-    template.innerHTML = html;
-    return template.content.firstChild;
-}
-
 customElements.define('sandwich-list', SandwichesList);

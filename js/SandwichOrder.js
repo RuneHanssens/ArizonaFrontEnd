@@ -3,6 +3,11 @@ import MyCustomElement from './MyCustomElement.js'
 class SandwichOrder extends MyCustomElement{
   connectedCallback(){
     super.connectedCallback()
+    this.setupEventListeners()
+    var script = document.createElement('script');
+    script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
+    script.type = 'text/javascript';
+    this.shadowRoot.appendChild(script);
   }
 
   setSandwich(sandwich){
@@ -23,7 +28,7 @@ class SandwichOrder extends MyCustomElement{
       price: sandwich.price,
       name: sandwich.name
     }
-    document.querySelector('sandwich-app').dispatchEvent(new CustomEvent('confirm', {detail:order}))
+    this.dispatchEvent(new CustomEvent('confirm', {detail:order}))
   }
 
   sandwichTemplate(sandwich){
@@ -35,6 +40,7 @@ class SandwichOrder extends MyCustomElement{
             </div>
       `
   }
+
   get template(){
     return `<div id="order">
               <input type="radio" name="breadType" value="Turkish bread" checked="checked"> Turkish bread
@@ -45,5 +51,36 @@ class SandwichOrder extends MyCustomElement{
               <button id="confirm">Confirm order</button>
             </div>`
   }
+
+  setupEventListeners(){
+    this.addEventListener('confirm', (e) => this.confirmOrder(e.detail))
+  }
+
+  confirmOrder(order){
+    this.postJSON('http://localhost:8080/orders', order, () => this.successOrder(order), () => this.failOrder())
+  }
+
+  successOrder(order){
+    document.querySelector('sandwich-app').dispatchEvent(new CustomEvent('confirmation', {detail:order}))
+  }
+
+  failOrder(){
+    console.log('TODO: failed to add order!')
+  }
+
+  postJSON(url, data, successCallback, errCallback) {
+      return $.ajax({
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      'type': 'POST',
+      'url': url,
+      'data': JSON.stringify(data),
+      'dataType': 'json',
+      'success': successCallback,
+      'error': errCallback
+      });
+  };
 }
 customElements.define('sandwich-order', SandwichOrder);
