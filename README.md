@@ -1,3 +1,3 @@
 Start frontend
-npm i -g http-server
-http-server
+- npm i -g http-server
+- http-server
