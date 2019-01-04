@@ -45,7 +45,9 @@ class OrderList extends MyCustomElement{
   }
   get template(){
     return `<div id="orders">
-            </div>`
+              <h3>Today's orders</h3>
+            </div>
+            <a href="http://localhost:8080/download" class="btn btn-outline-success">Download</a>`
   }
 }
 

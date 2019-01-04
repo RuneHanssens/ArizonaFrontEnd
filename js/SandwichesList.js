@@ -21,14 +21,14 @@ class SandwichesList extends MyCustomElement{
 
   sandwichTemplate(sandwich){
       return `
-          <a class="list-group-item">
+          <div class="list-group-item">
             <div>
               <h3>${sandwich.name}</h3>
               <p>${sandwich.ingredients}</p>
               <p>€ ${sandwich.price}</p>
             </div>
-            <button id="${sandwich.id}-order">Order</button>
-          </a>
+            <button type="button" class="btn btn-outline-success" id="${sandwich.id}-order">Order</button>
+          </div>
       `
   }
   get template(){
